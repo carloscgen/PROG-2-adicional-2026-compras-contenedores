@@ -42,4 +42,8 @@ public class Destinatario {
   public void setCiudad(String ciudad) {
     this.ciudad = ciudad;
   }
+
+  public Destinatario getCopia(){
+    return new Destinatario(nombre, apellido, direccion, ciudad);
+  }
 }
