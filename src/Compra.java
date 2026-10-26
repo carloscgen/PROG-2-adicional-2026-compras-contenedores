@@ -16,15 +16,6 @@ public class Compra extends ElementoEnvio {
     this.entregado = false;
   }
 
-  // OPCION 2 NECESITA OTRO CONSTRUCTOR NUEVO
-  // public Compra(Compra compraParaCopiar) {
-  // this.destinatario = compraParaCopiar.destinatario.getCopia();
-  // this.ids = new ArrayList<>(compraParaCopiar.ids);
-  // this.entregado = compraParaCopiar.entregado;
-  // this.tiempoEstimadoEntrega = compraParaCopiar.tiempoEstimadoEntrega;
-  // this.distancia = compraParaCopiar.distancia;
-  // }
-
   public List<String> getCopiaIds() {
     return new ArrayList<>(this.ids);
   }
@@ -73,32 +64,34 @@ public class Compra extends ElementoEnvio {
     return ids.contains(id);
   }
 
-  // OPCION 1
-  public ElementoEnvio getCopia() {
+  protected Compra crearCopiaInicial() {
     Compra nuevaCompra = new Compra(getDestinatario(), tiempoEstimadoEntrega,
         distancia);
-
-    // OPCION a
-    for (String id : ids) {
-      nuevaCompra.agregarId(id);
-    }
-    if (this.estaEntregado()) {
-      nuevaCompra.marcarEntregado();
-    }
-
-    // OPCION b
-    // nuevaCompra.ids = getCopiaIds();
-    // nuevaCompra.entregado = this.estaEntregado();
     return nuevaCompra;
   }
 
-  // OPCION 2
-  // public ElementoEnvio getCopia() {
-  // return new Compra(this);
-  // }
+  protected void agregarInfo(Compra c) {
+    // OPCION a
+    for (String id : ids) {
+      c.agregarId(id);
+    }
+    if (this.estaEntregado()) {
+      c.marcarEntregado();
+    }
+
+    // OPCION b
+    // c.ids = getCopiaIds();
+    // c.entregado = this.estaEntregado();
+  }
+
+  public ElementoEnvio getCopia() {
+    Compra nuevaCompra = crearCopiaInicial();
+    agregarInfo(nuevaCompra);
+    return nuevaCompra;
+  }
 
   public ElementoEnvio getCopia(Condicion c) {
-    if(c.cumple(this)) {
+    if (c.cumple(this)) {
       return this.getCopia();
     } else {
       return null;

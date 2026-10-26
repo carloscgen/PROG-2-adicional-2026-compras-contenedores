@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Contenedor extends ElementoEnvio {
-  private  List<ElementoEnvio> elementos;
+  private List<ElementoEnvio> elementos;
 
   public Contenedor() {
     this.elementos = new ArrayList<>();
@@ -38,8 +38,13 @@ public class Contenedor extends ElementoEnvio {
   }
 
   public void agregarElemento(ElementoEnvio el) {
-    String ciudadContenedor = this.getCiudadDestino();
     String ciudadDestinoElemento = el.getCiudadDestino();
+    // un elemento sin ciudad (contenedor vacío) no se agrega
+    if (ciudadDestinoElemento == null) {
+      return;
+    }
+
+    String ciudadContenedor = this.getCiudadDestino();
 
     // se agrega si la ciudad del contenedor no está determinada, o si coincide con
     // la del elemento
